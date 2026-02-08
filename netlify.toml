@@ -3,6 +3,10 @@
   publish = "dist"
   command = "npm run build"
 
+# Environment variables
+[build.environment]
+  VITE_API_URL = "https://helpdesk-backend-1w6a.onrender.com"
+
 # Redirect all routes to index.html for SPA routing
 [[redirects]]
   from = "/*"
