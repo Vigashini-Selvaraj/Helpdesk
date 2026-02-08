@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config/api";
 import {
     ArrowLeft,
     Send,
@@ -25,7 +26,7 @@ export default function ComplaintDetails() {
 
     const fetchComplaint = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/complaints/my/${JSON.parse(localStorage.getItem("user")).id || JSON.parse(localStorage.getItem("user"))._id}`);
+            const res = await axios.get(`${API_URL}/api/complaints/my/${JSON.parse(localStorage.getItem("user")).id || JSON.parse(localStorage.getItem("user"))._id}`);
             // Since API returns all, find the specific one. In real app, make a GET /:id endpoint.
             const found = res.data.find(c => c._id === id);
             setComplaint(found);

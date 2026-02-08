@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config/api";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -32,8 +33,8 @@ export default function AdminDashboard() {
         setLoading(true);
         try {
             const [complaintsRes, studentsRes] = await Promise.all([
-                axios.get("http://localhost:5000/api/complaints/all"),
-                axios.get("http://localhost:5000/api/users/all")
+                axios.get(`${API_URL}/api/complaints/all`),
+                axios.get(`${API_URL}/api/users/all`)
             ]);
 
             const cData = complaintsRes.data;
@@ -62,7 +63,7 @@ export default function AdminDashboard() {
     const handleDeleteComplaint = async (id) => {
         if (!confirm("Are you sure you want to delete this complaint?")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/complaints/${id}`);
+            await axios.delete(`${API_URL}/api/complaints/${id}`);
             alert("Complaint deleted");
             fetchData();
         } catch (err) {
@@ -73,7 +74,7 @@ export default function AdminDashboard() {
     const handleDeleteStudent = async (id) => {
         if (!confirm("Are you sure you want to remove this student? This action cannot be undone.")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/users/${id}`);
+            await axios.delete(`${API_URL}/api/users/${id}`);
             alert("Student removed");
             fetchData();
         } catch (err) {
@@ -83,7 +84,7 @@ export default function AdminDashboard() {
 
     const handleStatusChange = async (id, newStatus) => {
         try {
-            await axios.put(`http://localhost:5000/api/complaints/${id}/status`, { status: newStatus });
+            await axios.put(`${API_URL}/api/complaints/${id}/status`, { status: newStatus });
             // Optimistic Update
             setComplaints(prev => prev.map(c => c._id === id ? { ...c, status: newStatus } : c));
             // Recalculate stats locally or refetch

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config/api";
 import {
     LayoutDashboard,
     PlusCircle,
@@ -27,7 +28,7 @@ const MyHistory = () => {
     const fetchComplaints = async () => {
         try {
             const userId = user.id || user._id;
-            const res = await axios.get(`http://localhost:5000/api/complaints/my/${userId}`);
+            const res = await axios.get(`${API_URL}/api/complaints/my/${userId}`);
             setComplaints(res.data);
         } catch (err) {
             console.error("Failed to fetch history", err);

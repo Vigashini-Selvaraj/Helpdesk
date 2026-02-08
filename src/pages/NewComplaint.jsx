@@ -16,6 +16,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config/api";
 
 export default function NewComplaint() {
     const navigate = useNavigate();
@@ -76,7 +77,7 @@ export default function NewComplaint() {
         setLoading(true);
 
         try {
-            await axios.post("http://localhost:5000/api/complaints", {
+            await axios.post(`${API_URL}/api/complaints`, {
                 userId: user.id || user._id,
                 title: formData.title,
                 description: formData.description,
