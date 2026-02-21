@@ -114,8 +114,8 @@ export default function ComplaintDetails() {
     if (!complaint) return <div className="p-10 text-center">Complaint not found</div>;
 
     return (
-        <div className="flex h-screen bg-gray-100 justify-center items-center p-4">
-            <div className="bg-white w-full max-w-md h-[80vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
+        <div className="flex h-screen bg-gray-100 justify-center items-center md:p-4">
+            <div className="bg-white w-full max-w-md h-full md:h-[80vh] md:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
 
                 {/* HEADER */}
                 <div className="bg-primary-600 p-4 text-white flex items-center gap-3 shadow-md">

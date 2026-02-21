@@ -16,6 +16,7 @@ const MyHistory = () => {
 
     const [complaints, setComplaints] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         if (!user.email) {
@@ -54,9 +55,29 @@ const MyHistory = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-gradient-to-br from-primary-200 via-primary-100 to-white">
+        <div className="flex min-h-screen bg-gradient-to-br from-primary-200 via-primary-100 to-white relative">
+            {/* MOBILE TOP BAR */}
+            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b px-6 flex items-center justify-between z-[60]">
+                <div className="flex items-center gap-2">
+                    <ShieldCheck size={24} className="text-primary-600" />
+                    <span className="font-bold text-gray-800">HelpDesk+</span>
+                </div>
+                <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-600"
+                >
+                    <LayoutDashboard size={24} />
+                </button>
+            </div>
+
+            {/* SIDEBAR OVERLAY */}
+            <div
+                className={`fixed inset-0 bg-black/50 transition-opacity z-[70] md:hidden ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                onClick={() => setIsMenuOpen(false)}
+            ></div>
+
             {/* SIDEBAR */}
-            <aside className="w-64 bg-white border-r px-6 py-6 flex flex-col">
+            <aside className={`fixed left-0 top-0 h-screen w-64 bg-white border-r px-6 py-6 flex flex-col z-[80] transition-transform duration-300 md:translate-x-0 md:sticky ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className="flex items-center gap-2 mb-10">
                     <div className="bg-primary-600 text-white p-2 rounded-lg">
                         <ShieldCheck size={20} />
@@ -79,14 +100,14 @@ const MyHistory = () => {
                     </div>
                 </nav>
 
-                <button onClick={() => { localStorage.removeItem("user"); navigate("/login"); }} className="flex items-center gap-2 mt-6 text-gray-500 hover:text-red-500">
+                <button onClick={() => { localStorage.clear(); navigate("/"); }} className="flex items-center gap-2 mt-6 text-gray-500 hover:text-red-500 font-medium">
                     <LogOut size={18} />
                     Logout
                 </button>
             </aside>
 
             {/* MAIN CONTENT */}
-            <main className="flex-1 p-10 overflow-y-auto">
+            <main className="flex-1 p-6 md:p-10 overflow-y-auto pt-24 md:pt-10">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">My Complaints</h1>
                     <p className="text-gray-500 mt-2">Track the status of your submitted grievances.</p>

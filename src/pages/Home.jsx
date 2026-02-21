@@ -23,6 +23,7 @@ const Home = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeModal, setActiveModal] = useState(null); // 'login', 'register', or null
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const openLogin = () => setActiveModal('login');
     const openRegister = () => setActiveModal('register');
@@ -69,12 +70,43 @@ const Home = () => {
                         <button onClick={openLogin} className="hover:text-primary-600 transition-colors">Log in</button>
                     </div>
 
-                    <button
-                        onClick={openRegister}
-                        className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
-                    >
-                        Get Account
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={openRegister}
+                            className="hidden sm:block bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
+                        >
+                            Get Account
+                        </button>
+                        <button
+                            className="md:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-lg"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            <MessageSquare size={24} />
+                        </button>
+                    </div>
+                </div>
+
+                {/* MOBILE MENU DRAWER */}
+                <div className={`md:hidden fixed inset-0 z-[100] transition-all duration-300 ${isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
+                    <div className={`absolute right-0 top-0 bottom-0 w-72 bg-white shadow-2xl transition-transform duration-300 transform ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+                        <div className="p-6 flex flex-col h-full">
+                            <div className="flex items-center justify-between mb-10">
+                                <span className="font-bold text-xl text-primary-600">Menu</span>
+                                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-400 hover:text-slate-600">
+                                    <ArrowRight size={24} />
+                                </button>
+                            </div>
+                            <nav className="flex flex-col gap-6 text-lg font-bold text-slate-800">
+                                <a href="#" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
+                                <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)}>How it Works</a>
+                                <a href="#features" onClick={() => setIsMobileMenuOpen(false)}>Features</a>
+                                <div className="h-px bg-slate-100 my-2"></div>
+                                <button onClick={() => { setIsMobileMenuOpen(false); openLogin(); }} className="text-left text-primary-600">Log in</button>
+                                <button onClick={() => { setIsMobileMenuOpen(false); openRegister(); }} className="bg-primary-600 text-white p-4 rounded-2xl text-center">Get Started</button>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -94,7 +126,7 @@ const Home = () => {
                         Live Student Support System
                     </span>
 
-                    <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight text-slate-900 mb-10 leading-[1.1]">
+                    <h1 className="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-slate-900 mb-10 leading-[1.1]">
                         Resolve Campus Issues <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-purple-600">
                             Faster & Transparently

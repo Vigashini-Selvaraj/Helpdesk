@@ -30,6 +30,7 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState("All");
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -136,9 +137,29 @@ export default function AdminDashboard() {
     };
 
     return (
-        <div className="flex min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 font-sans">
+        <div className="flex min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 font-sans relative">
+            {/* MOBILE HEADER */}
+            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 border-b border-slate-800 px-6 flex items-center justify-between z-[60]">
+                <div className="flex items-center gap-2">
+                    <ShieldCheck size={24} className="text-purple-500" />
+                    <span className="font-bold text-white">Tracklyy</span>
+                </div>
+                <button
+                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    className="p-2 hover:bg-slate-800 rounded-lg text-slate-400"
+                >
+                    <LayoutDashboard size={24} />
+                </button>
+            </div>
+
+            {/* SIDEBAR OVERLAY */}
+            <div
+                className={`fixed inset-0 bg-black/50 transition-opacity z-[70] md:hidden ${isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                onClick={() => setIsSidebarOpen(false)}
+            ></div>
+
             {/* SIDEBAR */}
-            <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-50">
+            <aside className={`fixed left-0 top-0 h-screen w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-[80] transition-transform duration-300 md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className="p-8 pb-4">
                     <div className="flex items-center gap-3 mb-10">
                         <div className="bg-gradient-to-tr from-purple-500 to-indigo-600 p-2.5 rounded-xl shadow-lg shadow-purple-500/20">
@@ -187,7 +208,7 @@ export default function AdminDashboard() {
             </aside>
 
             {/* MAIN CONTENT */}
-            <main className="flex-1 ml-72 p-8 lg:p-12 overflow-y-auto bg-transparent">
+            <main className="flex-1 md:ml-72 p-6 md:p-12 overflow-y-auto bg-transparent pt-24 md:pt-12 transition-all">
                 {/* HEADER */}
                 <header className="flex justify-between items-center mb-12 animate-fade-in-up">
                     <div>
@@ -220,7 +241,7 @@ export default function AdminDashboard() {
                 {activeTab === "overview" && (
                     <div className="space-y-10 animate-fade-in-up">
                         {/* STATS */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                             <StatCard
                                 title="Total Tickets"
                                 count={stats.total}
@@ -368,7 +389,7 @@ export default function AdminDashboard() {
                                                 {u.role !== 'Admin' && (
                                                     <button
                                                         onClick={() => handleDeleteStudent(u._id)}
-                                                        className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                                        className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all md:opacity-0 group-hover:opacity-100 opacity-100"
                                                         title="Remove Student"
                                                     >
                                                         <Trash2 size={18} />
@@ -527,7 +548,7 @@ function ComplaintsTable({ complaints, loading, handleDelete, handleStatusChange
                             <td className="px-6 py-5 text-right">
                                 <button
                                     onClick={() => handleDelete(c._id)}
-                                    className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                    className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all md:opacity-0 group-hover:opacity-100 opacity-100"
                                     title="Delete Complaint"
                                 >
                                     <Trash2 size={18} />

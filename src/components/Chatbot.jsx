@@ -179,10 +179,10 @@ export default function Chatbot({ role = "student" }) {
 
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end">
             {/* CHAT WINDOW */}
             {isOpen && (
-                <div className="bg-white w-80 md:w-96 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col font-sans animate-in slide-in-from-bottom-10 fade-in duration-300 mb-4 h-[500px]">
+                <div className="bg-white w-[calc(100vw-2rem)] sm:w-80 md:w-96 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col font-sans animate-in slide-in-from-bottom-10 fade-in duration-300 mb-4 h-[500px] max-h-[70vh]">
                     {/* Header */}
                     <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-4 flex justify-between items-center text-white shadow-md">
                         <div className="flex items-center gap-3">

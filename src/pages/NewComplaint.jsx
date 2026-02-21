@@ -31,6 +31,7 @@ export default function NewComplaint() {
 
     const [loading, setLoading] = useState(false);
     const [aiLoading, setAiLoading] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -97,9 +98,29 @@ export default function NewComplaint() {
     };
 
     return (
-        <div className="flex min-h-screen bg-gradient-to-br from-primary-200 via-primary-100 to-white font-sans">
-            {/* SIDEBAR (Hidden on Mobile for focus) */}
-            <aside className="w-20 lg:w-72 bg-white border-r py-8 flex flex-col hidden md:flex sticky top-0 h-screen transition-all duration-300">
+        <div className="flex min-h-screen bg-gradient-to-br from-primary-200 via-primary-100 to-white font-sans relative overflow-hidden">
+            {/* MOBILE TOP BAR */}
+            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b px-6 flex items-center justify-between z-[60]">
+                <div className="flex items-center gap-2">
+                    <ShieldCheck size={24} className="text-primary-600" />
+                    <span className="font-bold text-gray-800">HelpDesk+</span>
+                </div>
+                <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-600"
+                >
+                    <LayoutDashboard size={24} />
+                </button>
+            </div>
+
+            {/* SIDEBAR OVERLAY */}
+            <div
+                className={`fixed inset-0 bg-black/50 transition-opacity z-[70] md:hidden ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                onClick={() => setIsMenuOpen(false)}
+            ></div>
+
+            {/* SIDEBAR */}
+            <aside className={`fixed left-0 top-0 h-screen w-72 bg-white border-r px-8 py-8 flex flex-col z-[80] transition-transform duration-300 md:translate-x-0 md:sticky ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className="flex items-center gap-3 px-6 mb-12">
                     <div className="bg-primary-600 text-white p-2.5 rounded-xl shadow-lg shadow-primary-200">
                         <ShieldCheck size={24} />
@@ -125,21 +146,21 @@ export default function NewComplaint() {
                 </nav>
 
                 <div className="px-4 mt-auto">
-                    <button onClick={() => { localStorage.removeItem("user"); navigate("/login"); }} className="flex items-center gap-3 text-gray-400 hover:text-red-500 transition-colors px-4 py-3">
+                    <button onClick={() => { localStorage.clear(); navigate("/"); }} className="flex items-center gap-3 text-gray-400 hover:text-red-500 transition-colors px-4 py-3 font-medium">
                         <LogOut size={24} />
-                        <span className="hidden lg:block font-medium">Log Out</span>
+                        <span className="hidden lg:block">Log Out</span>
                     </button>
                 </div>
             </aside>
 
             {/* MAIN CONTENT AREA */}
             <main className="flex-1 flex flex-col h-screen overflow-hidden">
-                {/* BACK BUTTON (Mobile) */}
-                <div className="md:hidden p-4 bg-white border-b flex items-center gap-2">
-                    <button onClick={() => navigate("/student")} className="text-gray-500">
-                        <ArrowRight className="rotate-180" />
+                {/* HEADER (Mobile Context) */}
+                <div className="md:hidden p-4 bg-white border-b flex items-center gap-2 pt-20">
+                    <button onClick={() => navigate("/student")} className="text-gray-500 p-2">
+                        <ArrowRight className="rotate-180" size={20} />
                     </button>
-                    <span className="font-bold text-gray-800">New Complaint</span>
+                    <span className="font-extrabold text-gray-900">New Complaint</span>
                 </div>
 
                 <div className="flex-1 flex overflow-hidden">
@@ -344,7 +365,3 @@ export default function NewComplaint() {
     );
 }
 
-// Importing Clock/CheckCircle2 at the top in case they were missing in snippets, 
-// but assuming they are available from 'lucide-react' based on previous files.
-// Adding them to the import list above.
-import { Clock, CheckCircle2 } from "lucide-react";

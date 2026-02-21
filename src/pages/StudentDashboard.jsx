@@ -24,6 +24,7 @@ export default function StudentDashboard() {
     const [stats, setStats] = useState({ total: 0, pending: 0, resolved: 0, inProgress: 0 });
     const [loading, setLoading] = useState(true);
     const [showProfile, setShowProfile] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         if (!user.email) {
@@ -54,10 +55,30 @@ export default function StudentDashboard() {
     };
 
     return (
-        <div className="flex min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 font-sans">
+        <div className="flex min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 font-sans relative">
+            {/* MOBILE TOP BAR */}
+            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b px-6 flex items-center justify-between z-[60]">
+                <div className="flex items-center gap-2">
+                    <ShieldCheck size={24} className="text-purple-600" />
+                    <span className="font-bold text-gray-800">HelpDesk+</span>
+                </div>
+                <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-600"
+                >
+                    <LayoutDashboard size={24} />
+                </button>
+            </div>
 
-            {/* SIDEBAR */}
-            <aside className="w-72 bg-white border-r px-8 py-8 flex flex-col hidden md:flex sticky top-0 h-screen">
+            {/* SIDEBAR / MOBILE OVERLAY */}
+            <div
+                className={`fixed inset-0 bg-black/50 transition-opacity z-[70] md:hidden ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                onClick={() => setIsMenuOpen(false)}
+            ></div>
+
+            <aside
+                className={`fixed left-0 top-0 h-screen w-72 bg-white border-r px-8 py-8 flex flex-col z-[80] transition-transform duration-300 md:translate-x-0 md:sticky ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+            >
                 {/* LOGO */}
                 <div className="flex items-center gap-3 mb-12">
                     <div className="bg-gradient-to-tr from-purple-600 to-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-purple-200">
@@ -115,7 +136,7 @@ export default function StudentDashboard() {
             </aside>
 
             {/* MAIN CONTENT */}
-            <main className="flex-1 p-8 md:p-12 overflow-y-auto relative">
+            <main className="flex-1 p-6 md:p-12 overflow-y-auto relative pt-24 md:pt-12">
 
                 {/* HEADER */}
                 <div className="mb-12">
@@ -128,7 +149,7 @@ export default function StudentDashboard() {
                 </div>
 
                 {/* 1. BIG STATS CARDS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
                     <StatCard title="Total Tickets" count={stats.total} icon={<ClipboardList size={28} />} color="bg-blue-600" />
                     <StatCard title="Pending" count={stats.pending} icon={<Clock size={28} />} color="bg-orange-500" />
                     <StatCard title="In Progress" count={stats.inProgress} icon={<AlertCircle size={28} />} color="bg-purple-600" />
