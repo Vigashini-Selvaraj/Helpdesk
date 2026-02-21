@@ -16,6 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../config/api";
+import Chatbot from "../components/Chatbot";
 
 export default function StudentDashboard() {
     const navigate = useNavigate();
@@ -53,13 +54,13 @@ export default function StudentDashboard() {
     };
 
     return (
-        <div className="flex min-h-screen bg-gradient-to-br from-primary-200 via-primary-100 to-white font-sans">
+        <div className="flex min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 font-sans">
 
             {/* SIDEBAR */}
             <aside className="w-72 bg-white border-r px-8 py-8 flex flex-col hidden md:flex sticky top-0 h-screen">
                 {/* LOGO */}
                 <div className="flex items-center gap-3 mb-12">
-                    <div className="bg-primary-600 text-white p-2.5 rounded-xl shadow-lg shadow-primary-200">
+                    <div className="bg-gradient-to-tr from-purple-600 to-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-purple-200">
                         <ShieldCheck size={24} />
                     </div>
                     <h1 className="text-2xl font-bold text-gray-800 tracking-tight">HelpDesk+</h1>
@@ -67,14 +68,14 @@ export default function StudentDashboard() {
 
                 {/* NAV */}
                 <nav className="flex-1 space-y-3">
-                    <div className="flex items-center gap-4 px-5 py-4 rounded-xl bg-primary-50 text-primary-700 font-bold shadow-sm ring-1 ring-primary-100">
+                    <div className="flex items-center gap-4 px-5 py-4 rounded-xl bg-purple-50 text-purple-700 font-bold shadow-sm ring-1 ring-purple-100">
                         <LayoutDashboard size={20} />
                         Dashboard
                     </div>
 
                     <div
                         onClick={() => navigate("/new-complaint")}
-                        className="flex items-center gap-4 px-5 py-4 text-gray-500 hover:bg-gradient-to-br from-primary-200 via-primary-100 to-white hover:text-gray-900 rounded-xl cursor-pointer transition-all duration-200 font-medium"
+                        className="flex items-center gap-4 px-5 py-4 text-gray-500 hover:bg-gradient-to-br from-purple-50 to-white hover:text-gray-900 rounded-xl cursor-pointer transition-all duration-200 font-medium"
                     >
                         <PlusCircle size={20} />
                         New Complaint
@@ -82,7 +83,7 @@ export default function StudentDashboard() {
 
                     <div
                         onClick={() => navigate("/history")}
-                        className="flex items-center gap-4 px-5 py-4 text-gray-500 hover:bg-gradient-to-br from-primary-200 via-primary-100 to-white hover:text-gray-900 rounded-xl cursor-pointer transition-all duration-200 font-medium"
+                        className="flex items-center gap-4 px-5 py-4 text-gray-500 hover:bg-gradient-to-br from-purple-50 to-white hover:text-gray-900 rounded-xl cursor-pointer transition-all duration-200 font-medium"
                     >
                         <ClipboardList size={20} />
                         My History
@@ -90,10 +91,10 @@ export default function StudentDashboard() {
                 </nav>
 
                 {/* ACCESS MODE */}
-                <div className="mt-10 bg-gradient-to-br from-primary-200 via-primary-100 to-white p-4 rounded-2xl border border-gray-100 cursor-pointer hover:bg-primary-50 transition group" onClick={() => setShowProfile(true)}>
-                    <p className="text-xs font-bold text-gray-400 mb-3 tracking-wider uppercase group-hover:text-primary-500">Current Session</p>
+                <div className="mt-10 bg-gradient-to-br from-purple-50 to-white p-4 rounded-2xl border border-purple-50 cursor-pointer hover:bg-purple-100 transition group" onClick={() => setShowProfile(true)}>
+                    <p className="text-xs font-bold text-gray-400 mb-3 tracking-wider uppercase group-hover:text-purple-500">Current Session</p>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold group-hover:bg-primary-600 group-hover:text-white transition">
+                        <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold group-hover:bg-purple-600 group-hover:text-white transition">
                             {user.name ? user.name.charAt(0).toUpperCase() : "S"}
                         </div>
                         <div className="overflow-hidden">
@@ -105,7 +106,7 @@ export default function StudentDashboard() {
 
                 {/* LOGOUT */}
                 <button
-                    onClick={() => { localStorage.removeItem("user"); navigate("/login"); }}
+                    onClick={() => { localStorage.clear(); navigate("/"); }}
                     className="flex items-center gap-3 mt-8 text-gray-400 hover:text-red-500 transition-colors px-2 font-medium"
                 >
                     <LogOut size={20} />
@@ -114,7 +115,7 @@ export default function StudentDashboard() {
             </aside>
 
             {/* MAIN CONTENT */}
-            <main className="flex-1 p-8 md:p-12 overflow-y-auto">
+            <main className="flex-1 p-8 md:p-12 overflow-y-auto relative">
 
                 {/* HEADER */}
                 <div className="mb-12">
@@ -130,7 +131,7 @@ export default function StudentDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     <StatCard title="Total Tickets" count={stats.total} icon={<ClipboardList size={28} />} color="bg-blue-600" />
                     <StatCard title="Pending" count={stats.pending} icon={<Clock size={28} />} color="bg-orange-500" />
-                    <StatCard title="In Progress" count={stats.inProgress} icon={<AlertCircle size={28} />} color="bg-primary-600" />
+                    <StatCard title="In Progress" count={stats.inProgress} icon={<AlertCircle size={28} />} color="bg-purple-600" />
                     <StatCard title="Resolved" count={stats.resolved} icon={<CheckCircle2 size={28} />} color="bg-green-500" />
                 </div>
 
@@ -142,7 +143,7 @@ export default function StudentDashboard() {
                         {/* QUICK ACTIONS */}
                         <section>
                             <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                                <ShieldCheck className="text-primary-600" /> Quick Actions
+                                <ShieldCheck className="text-purple-600" /> Quick Actions
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <ActionCard
@@ -150,15 +151,15 @@ export default function StudentDashboard() {
                                     title="File a New Complaint"
                                     desc="Submit a new issue regarding hostel, academic, or infrastructure."
                                     icon={<PlusCircle size={32} className="text-white" />}
-                                    bg="bg-primary-600 text-white hover:bg-primary-700"
-                                    text="text-primary-100"
+                                    bg="bg-purple-600 text-white hover:bg-purple-700"
+                                    text="text-purple-100"
                                 />
                                 <ActionCard
                                     onClick={() => navigate("/history")}
                                     title="View My History"
                                     desc="Check the status of your previous complaints and chat with AI."
-                                    icon={<ClipboardList size={32} className="text-primary-600" />}
-                                    bg="bg-white text-gray-800 border border-gray-200 hover:border-primary-300"
+                                    icon={<ClipboardList size={32} className="text-purple-600" />}
+                                    bg="bg-white text-gray-800 border border-gray-200 hover:border-purple-300"
                                     text="text-gray-500"
                                 />
                             </div>
@@ -197,14 +198,14 @@ export default function StudentDashboard() {
                     <div className="space-y-10">
 
                         {/* HELP / EMERGENCY */}
-                        <div className="bg-gradient-to-br from-primary-600 to-purple-700 rounded-3xl p-8 text-white shadow-xl">
+                        <div className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl">
                             <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                                 <Bell className="animate-pulse" /> Emergency?
                             </h3>
-                            <p className="text-primary-100 mb-8 leading-relaxed">
+                            <p className="text-purple-100 mb-8 leading-relaxed">
                                 For urgent safety or medical emergencies, do not use this portal. Call the 24/7 helpline immediately.
                             </p>
-                            <button className="w-full bg-white text-primary-700 py-4 rounded-xl font-bold hover:bg-primary-50 transition shadow-md text-lg">
+                            <button className="w-full bg-white text-purple-700 py-4 rounded-xl font-bold hover:bg-purple-50 transition shadow-md text-lg">
                                 📞 Call 911-CAMPUS
                             </button>
                         </div>
@@ -226,6 +227,9 @@ export default function StudentDashboard() {
                     </div>
 
                 </div>
+
+                {/* CHATBOT INTEGRATION */}
+                <Chatbot />
 
             </main>
 
@@ -273,7 +277,7 @@ function ActionCard({ title, desc, onClick, icon, bg, text }) {
 /* NEWS CARD */
 function NewsCard({ date, title, desc, tag }) {
     return (
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-primary-100 transition shadow-sm hover:shadow-md cursor-default">
+        <div className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-purple-100 transition shadow-sm hover:shadow-md cursor-default">
             <div className="flex justify-between items-center mb-3">
                 <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{date}</span>
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs font-bold">{tag}</span>
@@ -302,12 +306,12 @@ function ProfileModal({ user, onClose }) {
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200 relative">
 
                 {/* Header Background */}
-                <div className="h-32 bg-gradient-to-r from-primary-500 to-purple-600"></div>
+                <div className="h-32 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
 
                 {/* Avatar */}
                 <div className="flex justify-center -mt-16 relative">
                     <div className="w-32 h-32 rounded-full bg-white p-1 shadow-lg">
-                        <div className="w-full h-full rounded-full bg-primary-100 flex items-center justify-center text-4xl font-bold text-primary-600">
+                        <div className="w-full h-full rounded-full bg-purple-100 flex items-center justify-center text-4xl font-bold text-purple-600">
                             {user.name ? user.name.charAt(0).toUpperCase() : "S"}
                         </div>
                     </div>
@@ -316,7 +320,7 @@ function ProfileModal({ user, onClose }) {
                 {/* Content */}
                 <div className="text-center px-8 pb-8 pt-4">
                     <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
-                    <p className="text-primary-600 font-medium bg-primary-50 inline-block px-3 py-1 rounded-full text-sm mt-1">
+                    <p className="text-purple-600 font-medium bg-purple-50 inline-block px-3 py-1 rounded-full text-sm mt-1">
                         Student Account
                     </p>
 

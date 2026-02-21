@@ -70,26 +70,24 @@ export default function ComplaintDetails() {
             });
         }
 
-        // 4. Current Status Update
+        // 4. Current Status Update & Admin Notes
+        let statusMsg = "";
         if (c.status === "In Progress") {
-            history.push({
-                sender: "AI",
-                text: `👷‍♂️ GOOD NEWS: An Admin has seen your ticket and marked it "In Progress". They are working on it right now.`,
-                time: "Just now"
-            });
+            statusMsg = `👷‍♂️ GOOD NEWS: An Admin has seen your ticket and marked it "In Progress". They are working on it right now.`;
         } else if (c.status === "Resolved") {
-            history.push({
-                sender: "AI",
-                text: `✅ GREAT NEWS: Your issue has been marked as RESOLVED! Please check if everything is working fine now.`,
-                time: "Just now"
-            });
+            statusMsg = `✅ GREAT NEWS: Your issue has been marked as RESOLVED!`;
         } else {
-            history.push({
-                sender: "AI",
-                text: `🧑‍💼 Your ticket is currently in the "Pending" queue. I will ping you as soon as an Admin opens it.`,
-                time: "Just now"
-            });
+            statusMsg = `🧑‍💼 Your ticket is currently in the "Pending" queue. I will ping you as soon as an Admin opens it.`;
         }
+
+        if (c.resolutionNote) statusMsg += `\n\nAdmin Note: "${c.resolutionNote}"`;
+        if (c.adminFeedback) statusMsg += `\n\nFeedback: ⭐ ${c.adminFeedback}`;
+
+        history.push({
+            sender: "AI",
+            text: statusMsg,
+            time: "Just now"
+        });
 
         setMessages(history);
     };

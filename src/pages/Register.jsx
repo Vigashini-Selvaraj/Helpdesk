@@ -32,6 +32,14 @@ const Register = () => {
         formData
       );
 
+      // Clear form data
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        role: "Student"
+      });
+
       alert("Registration successful 🎉 Please log in.");
       navigate("/login");
     } catch (err) {
@@ -42,8 +50,16 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-200 via-primary-100 to-white flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-xl p-10">
+    <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden">
+      {/* Background Gradients from Home */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary-50/80 to-white -z-20" />
+      <div className="absolute top-0 right-0 w-[900px] h-[900px] bg-purple-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-20" />
+      <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-primary-100/40 rounded-full blur-3xl -translate-y-1/3 -translate-x-1/4 -z-20" />
+
+      {/* Blur Overlay */}
+      <div className="absolute inset-0 backdrop-blur-sm -z-10" />
+
+      <div className="bg-white/80 backdrop-blur-xl w-full max-w-md rounded-3xl shadow-2xl p-10 border border-white/50">
 
         {/* HEADER */}
         <div className="text-center mb-8">
@@ -71,6 +87,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="John Doe"
               required
+              autoComplete="off"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none"
             />
           </div>
@@ -87,6 +104,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="student@university.edu"
               required
+              autoComplete="off"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none"
             />
           </div>
@@ -103,6 +121,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="••••••••"
               required
+              autoComplete="new-password"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none"
             />
           </div>
@@ -152,7 +171,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all disabled:opacity-50"
+            className="w-full bg-primary-700 hover:bg-primary-800 text-white font-bold py-4 rounded-xl shadow-lg transition-all disabled:opacity-50"
           >
             {loading ? "Creating account..." : "Register Account"}
           </button>

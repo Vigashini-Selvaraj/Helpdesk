@@ -134,10 +134,23 @@ const MyHistory = () => {
                                         <h3 className="text-lg font-bold text-slate-800">{c.title}</h3>
                                         <p className="text-slate-600 mt-1">{c.description}</p>
 
-                                        <div className="mt-4 flex items-center gap-2">
+                                        <div className="mt-4 flex flex-wrap items-center gap-2">
                                             <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">Category: {c.type}</span>
                                             <span className="text-sm text-gray-400 italic">• {msg}</span>
                                         </div>
+
+                                        {(c.resolutionNote || c.adminFeedback) && (
+                                            <div className="mt-6 p-4 bg-green-50 rounded-2xl border border-green-100 animate-in slide-in-from-top-2 duration-300">
+                                                <p className="text-xs font-bold text-green-600 uppercase mb-2 tracking-wider">Admin Response</p>
+                                                {c.resolutionNote && <p className="text-sm text-slate-700 font-medium mb-2">{c.resolutionNote}</p>}
+                                                {c.adminFeedback && (
+                                                    <div className="flex items-center gap-2 text-xs font-bold text-green-700 bg-white/50 w-fit px-3 py-1.5 rounded-full border border-green-100">
+                                                        <span>⭐</span>
+                                                        <span>{c.adminFeedback}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             );

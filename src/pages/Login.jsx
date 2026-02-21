@@ -33,6 +33,13 @@ const Login = () => {
 
       console.log("Login Login Response:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      // Clear form data
+      setFormData({
+        email: "",
+        password: ""
+      });
+
       alert("Login successful 🎉");
       const userRole = response.data.user.role || "";
       if (userRole.toLowerCase() === "admin") {
@@ -48,8 +55,16 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8">
+    <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden">
+      {/* Background Gradients from Home */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary-50/80 to-white -z-20" />
+      <div className="absolute top-0 right-0 w-[900px] h-[900px] bg-purple-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-20" />
+      <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-primary-100/40 rounded-full blur-3xl -translate-y-1/3 -translate-x-1/4 -z-20" />
+
+      {/* Blur Overlay */}
+      <div className="absolute inset-0 backdrop-blur-sm -z-10" />
+
+      <div className="bg-white/80 backdrop-blur-xl w-full max-w-md rounded-2xl shadow-2xl p-8 border border-white/50">
 
         <div className="text-center mb-6">
           <LogIn className="mx-auto text-primary-600" size={32} />
@@ -64,6 +79,7 @@ const Login = () => {
             name="email"
             placeholder="Email"
             required
+            autoComplete="off"
             value={formData.email}
             onChange={handleChange}
             className="w-full p-3 border rounded-lg"
@@ -76,6 +92,7 @@ const Login = () => {
               name="password"
               placeholder="Password"
               required
+              autoComplete="off"
               value={formData.password}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg pr-10"
@@ -95,7 +112,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-br from-primary-200 via-primary-100 to-white text-white py-3 rounded-lg disabled:opacity-50"
+            className="w-full bg-primary-700 hover:bg-primary-800 text-white font-bold py-3 rounded-lg transition-all shadow-md disabled:opacity-50"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

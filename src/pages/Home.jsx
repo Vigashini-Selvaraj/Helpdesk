@@ -1,4 +1,9 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import API_URL from "../config/api";
+import LoginModal from "../components/LoginModal";
+import RegisterModal from "../components/RegisterModal";
 import {
     ArrowRight,
     CheckCircle2,
@@ -6,11 +11,44 @@ import {
     ShieldCheck,
     MessageSquare,
     BarChart3,
-    Users
+    Users,
+    Eye,
+    Lock,
+    Zap,
+    Building2
 } from "lucide-react";
 
 const Home = () => {
     const navigate = useNavigate();
+    const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [activeModal, setActiveModal] = useState(null); // 'login', 'register', or null
+
+    const openLogin = () => setActiveModal('login');
+    const openRegister = () => setActiveModal('register');
+    const closeModal = () => setActiveModal(null);
+
+    // Fetch stats on component mount
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/api/stats`);
+                setStats(response.data);
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
+    }, []);
+
+    const scrollToStats = () => {
+        const statsSection = document.getElementById('stats-section');
+        if (statsSection) {
+            statsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900">
@@ -24,14 +62,15 @@ const Home = () => {
                         <span>Tracklyy</span>
                     </div>
 
-                    <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+                    <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
                         <a href="#" className="hover:text-primary-600 transition-colors">Home</a>
                         <a href="#how-it-works" className="hover:text-primary-600 transition-colors">How it Works</a>
                         <a href="#features" className="hover:text-primary-600 transition-colors">Features</a>
-                    </nav>
+                        <button onClick={openLogin} className="hover:text-primary-600 transition-colors">Log in</button>
+                    </div>
 
                     <button
-                        onClick={() => navigate("/register")}
+                        onClick={openRegister}
                         className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
                     >
                         Get Account
@@ -68,7 +107,7 @@ const Home = () => {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                         <button
-                            onClick={() => navigate("/register")}
+                            onClick={openRegister}
                             className="group bg-primary-600 text-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-primary-700 transition-all shadow-xl hover:shadow-primary-200 flex items-center gap-3"
                         >
                             Get Started Now
@@ -154,6 +193,78 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* FEATURES SECTION */}
+            <section id="features" className="py-24 bg-white relative">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Powerful Features</h2>
+                        <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+                            Everything you need to manage and resolve campus issues efficiently.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[
+                            {
+                                icon: Zap,
+                                title: "Real-Time Tracking",
+                                desc: "Monitor your complaint status in real-time with instant notifications and updates.",
+                                color: "bg-yellow-100 text-yellow-600"
+                            },
+                            {
+                                icon: Eye,
+                                title: "Full Transparency",
+                                desc: "Complete visibility into the resolution process from submission to closure.",
+                                color: "bg-blue-100 text-blue-600"
+                            },
+                            {
+                                icon: MessageSquare,
+                                title: "Direct Communication",
+                                desc: "Chat directly with administrators and get quick responses to your queries.",
+                                color: "bg-green-100 text-green-600"
+                            },
+                            {
+                                icon: BarChart3,
+                                title: "Analytics Dashboard",
+                                desc: "View comprehensive statistics, trends, and insights about complaint resolution.",
+                                color: "bg-purple-100 text-purple-600"
+                            },
+                            {
+                                icon: Building2,
+                                title: "Multi-Department Routing",
+                                desc: "Automatically route complaints to the right department for faster resolution.",
+                                color: "bg-orange-100 text-orange-600"
+                            },
+                            {
+                                icon: Lock,
+                                title: "Secure & Private",
+                                desc: "Your data is encrypted and protected with industry-standard security measures.",
+                                color: "bg-red-100 text-red-600"
+                            }
+                        ].map((feature, i) => (
+                            <div
+                                key={i}
+                                className="group bg-white p-8 rounded-2xl border border-slate-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
+                            >
+                                <div className={`w-14 h-14 ${feature.color} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                                    <feature.icon size={28} />
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                                <p className="text-slate-500 leading-relaxed">{feature.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* MODALS */}
+            {activeModal === 'login' && (
+                <LoginModal onClose={closeModal} onSwitchToRegister={openRegister} />
+            )}
+            {activeModal === 'register' && (
+                <RegisterModal onClose={closeModal} onSwitchToLogin={openLogin} />
+            )}
 
             {/* FOOTER */}
             <footer className="bg-slate-900 text-slate-400 py-16">
