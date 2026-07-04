@@ -107,17 +107,21 @@ const MyHistory = () => {
             </aside>
 
             {/* MAIN CONTENT */}
-            <main className="flex-1 p-6 md:p-10 overflow-y-auto pt-24 md:pt-10">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">My Complaints</h1>
-                    <p className="text-gray-500 mt-2">Track the status of your submitted grievances.</p>
+            <main className="flex-1 p-4 md:p-10 overflow-y-auto pt-20 md:pt-10">
+                <div className="mb-6 md:mb-12">
+                    <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">My Complaints</h1>
+                    <p className="text-gray-500 mt-1 text-sm md:text-base font-medium">Track your submitted grievances in real-time.</p>
                 </div>
 
                 {loading ? (
                     <div className="text-center py-10 text-gray-500">Loading history...</div>
                 ) : complaints.length === 0 ? (
-                    <div className="text-center py-10 bg-white rounded-2xl border border-dashed">
-                        <p className="text-gray-500">No complaints yet.</p>
+                    <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-200 flex flex-col items-center justify-center animate-fade-in">
+                        <div className="bg-gray-50 p-4 rounded-full mb-4">
+                            <ClipboardList size={40} className="text-gray-300" />
+                        </div>
+                        <p className="text-gray-400 font-medium">No complaints submitted yet.</p>
+                        <button onClick={() => navigate("/new-complaint")} className="mt-4 text-primary-600 font-bold hover:underline">File your first complaint →</button>
                     </div>
                 ) : (
                     <div className="space-y-6">
@@ -136,18 +140,18 @@ const MyHistory = () => {
                                     {c.status === "In Progress" && <div className="absolute left-0 top-0 bottom-0 w-2 bg-yellow-400 group-hover:bg-yellow-500 transition"></div>}
                                     {c.status === "Resolved" && <div className="absolute left-0 top-0 bottom-0 w-2 bg-green-400 group-hover:bg-green-500 transition"></div>}
 
-                                    <div className="flex justify-between items-start pl-4">
-                                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                                            <span className="font-mono text-gray-400">#{c._id.slice(-6).toUpperCase()}</span>
-                                            <span>{new Date(c.createdAt).toLocaleDateString()}</span>
-                                            <span className={`text-xs px-2 py-0.5 rounded ${urgencyBadge}`}>
+                                    <div className="flex flex-col sm:flex-row justify-between items-start pl-4 gap-4">
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs font-bold uppercase tracking-wider">
+                                            <span className="text-primary-500 bg-primary-50 px-2 py-1 rounded">#{c._id.slice(-6).toUpperCase()}</span>
+                                            <span className="text-gray-400">{new Date(c.createdAt).toLocaleDateString()}</span>
+                                            <span className={`px-2 py-0.5 rounded-full w-fit ${urgencyBadge}`}>
                                                 {c.urgency || "Medium"} Priority
                                             </span>
                                         </div>
 
-                                        <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold ${color}`}>
+                                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-black ring-1 ring-inset ${color} whitespace-nowrap`}>
                                             <span>{emoji}</span>
-                                            {c.status}
+                                            {c.status.toUpperCase()}
                                         </div>
                                     </div>
 
@@ -161,12 +165,15 @@ const MyHistory = () => {
                                         </div>
 
                                         {(c.resolutionNote || c.adminFeedback) && (
-                                            <div className="mt-6 p-4 bg-green-50 rounded-2xl border border-green-100 animate-in slide-in-from-top-2 duration-300">
-                                                <p className="text-xs font-bold text-green-600 uppercase mb-2 tracking-wider">Admin Response</p>
-                                                {c.resolutionNote && <p className="text-sm text-slate-700 font-medium mb-2">{c.resolutionNote}</p>}
+                                            <div className="mt-6 p-5 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm animate-in slide-in-from-top-2 duration-300">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <ShieldCheck size={16} className="text-primary-600" />
+                                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Official Response</p>
+                                                </div>
+                                                {c.resolutionNote && <p className="text-sm text-slate-700 font-semibold leading-relaxed mb-4">"{c.resolutionNote}"</p>}
                                                 {c.adminFeedback && (
-                                                    <div className="flex items-center gap-2 text-xs font-bold text-green-700 bg-white/50 w-fit px-3 py-1.5 rounded-full border border-green-100">
-                                                        <span>⭐</span>
+                                                    <div className="flex items-center gap-2 text-[11px] font-bold text-primary-700 bg-primary-50/50 w-fit px-3 py-1.5 rounded-lg border border-primary-100">
+                                                        <span className="text-primary-500">★</span>
                                                         <span>{c.adminFeedback}</span>
                                                     </div>
                                                 )}
